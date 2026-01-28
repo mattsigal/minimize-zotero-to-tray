@@ -9,6 +9,10 @@
         "48": "content/icons/favicon.png",
         "96": "content/icons/favicon.png"
     },
+    "options_ui": {
+        "page": "preferences.xhtml",
+        "open_in_tab": false
+    },
     "applications": {
         "zotero": {
             "id": "minimize-zotero-to-tray@B3000Kcn.github.io",
@@ -17,4 +21,4 @@
             "update_url": "https://github.com/B3000Kcn/minimize-zotero-to-tray/releases/latest/download/update.json"
         }
     }
-} 
+}
