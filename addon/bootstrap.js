@@ -73,9 +73,22 @@ var ZoteroInTray = {
             this.Cc = Components.classes;
             this.Ci = Components.interfaces;
 
-            // Import only ctypes, which is known to be safe
-            const { ctypes } = ChromeUtils.import("resource://gre/modules/ctypes.jsm");
-            this.ctypes = ctypes;
+            // Import ctypes with fallback for Zotero 7 / Firefox 115+
+            try {
+                // Try standard JSM first (Zotero 6 / Early 7)
+                const { ctypes } = ChromeUtils.import("resource://gre/modules/ctypes.jsm");
+                this.ctypes = ctypes;
+            } catch (e) {
+                this.log("⚠️ Standard ctypes.jsm import failed. Trying ES Module...");
+                try {
+                     // Try ES Module (Modern Firefox/Zotero 7+)
+                     const { ctypes } = ChromeUtils.importESModule("resource://gre/modules/ctypes.sys.mjs");
+                     this.ctypes = ctypes;
+                } catch (e2) {
+                     this.log(`FATAL: Failed to import ctypes via JSM or ESM: ${e2}`);
+                     return;
+                }
+            }
 
         } catch (e) {
             this.log(`FATAL: Failed to import critical JSMs: ${e}`);
